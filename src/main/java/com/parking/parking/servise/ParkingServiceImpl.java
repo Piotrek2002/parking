@@ -5,6 +5,7 @@ import com.parking.parking.model.Place;
 import com.parking.parking.model.Ticket;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +15,18 @@ public class ParkingServiceImpl implements ParkingService{
 private Parking parking;
 
     public ParkingServiceImpl() {
-
+        Place place=new Place(1,15,"aaa");
+        Place place1=new Place(2,15,"bbb");
+        Place place2=new Place(3,15,"ccc");
+        Place place3=new Place(4,20,"ddd");
+        Place place4=new Place(5,40,"eee");
+        Map<Place,Boolean> map=new HashMap();
+        map.put(place,false);
+        map.put(place1,false);
+        map.put(place2,false);
+        map.put(place3,false);
+        map.put(place4,false);
+        parking.setPlaces(map);
     }
 
     @Override
