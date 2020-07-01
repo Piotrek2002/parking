@@ -4,12 +4,18 @@ import java.time.LocalDateTime;
 
 public class Ticket {
     LocalDateTime timeOfEntry;
+    LocalDateTime timeOfDeparture;
+    boolean status;
+    Place place;
     Tariff tariff;
     Integer countOfHour;
     double price;
 
-    public Ticket(LocalDateTime timeOfEntry, Tariff tariff, Integer countOfHour, double price) {
+    public Ticket(LocalDateTime timeOfEntry, LocalDateTime timeOfDeparture, boolean status, Place place, Tariff tariff, Integer countOfHour, double price) {
         this.timeOfEntry = timeOfEntry;
+        this.timeOfDeparture = timeOfDeparture;
+        this.status = status;
+        this.place = place;
         this.tariff = tariff;
         this.countOfHour = countOfHour;
         this.price = price;
@@ -48,5 +54,30 @@ public class Ticket {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public LocalDateTime getTimeOfDeparture() {
+
+        return timeOfDeparture;
+    }
+
+    public void setTimeOfDeparture(LocalDateTime timeOfDeparture) {
+        this.timeOfDeparture = timeOfDeparture;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public Place getPlace() {
+        return place;
+    }
+
+    public void setPlace(Place place) {
+        this.place = place;
     }
 }
