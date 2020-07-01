@@ -6,8 +6,8 @@ import com.parking.parking.model.Ticket;
 import java.util.List;
 
 public interface ParkingService {
-    void addPlace();
-    void deletePlace();
+    void addPlace(Place place);
+    void deletePlace(int placeId);
     void park(int ticketId);
     void getOut(int ticketId);
     void pay(int ticketId);
