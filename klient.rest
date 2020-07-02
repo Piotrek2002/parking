@@ -1,0 +1,49 @@
+GET http://localhost:8080/ticketList
+Accept: application/json
+
+###
+POST http://localhost:8080/parkCar
+Content-Type: application/json
+
+{
+  "place": {
+    "number": 6,
+    "area": 40,
+    "description": "fff"
+  }
+
+
+}
+
+###
+
+
+
+DELETE http://localhost:8080/deletePlace
+Content-Type: application/json
+
+{
+"number": 6,
+  "area": 40,
+  "description": "fff"
+}
+###
+POST http://localhost:8080/addPlace
+Content-Type: application/json
+
+{
+  "number": 6,
+  "area": 40,
+  "description": "fff"
+}
+
+###
+GET http://localhost:8080/freePlaceList
+Accept: application/json
+
+###
+GET http://localhost:8080/placeList
+Accept: application/json
+
+###
+

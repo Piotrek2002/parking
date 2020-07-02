@@ -21,11 +21,13 @@ public class ParkingServiceImpl implements ParkingService {
         Place place3 = new Place(4, 20, "ddd");
         Place place4 = new Place(5, 40, "eee");
         Map<Place, Boolean> map = new HashMap<>();
+        List<Ticket> tickets=new ArrayList<>();
         map.put(place, true);
         map.put(place1, true);
         map.put(place2, true);
         map.put(place3, true);
         map.put(place4, true);
+        this.parking.setTickets(tickets);
         this.parking.setPlaces(map);
     }
 
@@ -50,35 +52,40 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public void park(Ticket ticket) {
+    public Ticket park(Ticket ticket) {
         Map<Place, Boolean> map = parking.getPlaces();
         Place place = ticket.getPlace();
         map.remove(place);
-        map.put(place,false);
+        map.put(place, false);
         ticket.setTimeOfEntry(LocalDateTime.now());
         ticket.setStatus(false);
-
+        List<Ticket> tickets = parking.getTickets();
+        tickets.add(ticket);
+        parking.setTickets(tickets);
+        return ticket;
     }
 
     @Override
-    public void getOut(Ticket ticket) {
+    public Ticket getOut(Ticket ticket) {
         Map<Place, Boolean> map = parking.getPlaces();
         Place place = ticket.getPlace();
         map.remove(place);
-        map.put(place,true);
+        map.put(place, true);
         ticket.setTimeOfDeparture(LocalDateTime.now());
+        return ticket;
     }
 
     @Override
-    public void pay(Ticket ticket) {
+    public Ticket pay(Ticket ticket) {
         ticket.setStatus(true);
+        return ticket;
     }
 
     @Override
     public boolean checkTicketStatus(Ticket ticket) {
-        if (ticket.isStatus()){
+        if (ticket.isStatus()) {
             return true;
-        }else {
+        } else {
             return false;
         }
 
@@ -92,11 +99,11 @@ public class ParkingServiceImpl implements ParkingService {
 
     @Override
     public Ticket findTicketByPlace(Place place) {
-        List<Ticket> tickets=parking.getTickets();
-        Ticket t=new Ticket();
-        for (Ticket ticket:tickets){
-            if (place.equals(ticket.getPlace())){
-                t=ticket;
+        List<Ticket> tickets = parking.getTickets();
+        Ticket t = new Ticket();
+        for (Ticket ticket : tickets) {
+            if (place.equals(ticket.getPlace())) {
+                t = ticket;
             }
         }
         return t;
@@ -109,10 +116,10 @@ public class ParkingServiceImpl implements ParkingService {
 
     @Override
     public List<Place> findAllFreePlace() {
-        List<Place> placeList=new ArrayList<>();
-        Set<Place> places=parking.getPlaces().keySet();
-        for (Place place:places){
-            if (parking.getPlaces().get(place)){
+        List<Place> placeList = new ArrayList<>();
+        Set<Place> places = parking.getPlaces().keySet();
+        for (Place place : places) {
+            if (parking.getPlaces().get(place)) {
                 placeList.add(place);
             }
         }
@@ -127,5 +134,10 @@ public class ParkingServiceImpl implements ParkingService {
     @Override
     public int numberOfTicketsPerMonth() {
         return 0;
+    }
+
+    @Override
+    public List<Ticket> ticketList() {
+        return parking.getTickets();
     }
 }

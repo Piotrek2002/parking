@@ -7,11 +7,11 @@ public class Ticket {
     LocalDateTime timeOfDeparture;
     boolean status;
     Place place;
-    Tariff tariff;
+    Tariff.Price tariff;
     Integer countOfHour;
     double price;
 
-    public Ticket(LocalDateTime timeOfEntry, LocalDateTime timeOfDeparture, boolean status, Place place, Tariff tariff, Integer countOfHour, double price) {
+    public Ticket(LocalDateTime timeOfEntry, LocalDateTime timeOfDeparture, boolean status, Place place, Tariff.Price tariff, Integer countOfHour, double price) {
         this.timeOfEntry = timeOfEntry;
         this.timeOfDeparture = timeOfDeparture;
         this.status = status;
@@ -32,13 +32,7 @@ public class Ticket {
         this.timeOfEntry = timeOfEntry;
     }
 
-    public Tariff getTariff() {
-        return tariff;
-    }
 
-    public void setTariff(Tariff tariff) {
-        this.tariff = tariff;
-    }
 
     public Integer getCountOfHour() {
         return countOfHour;
@@ -79,5 +73,26 @@ public class Ticket {
 
     public void setPlace(Place place) {
         this.place = place;
+    }
+
+    public Tariff.Price getTariff() {
+        return tariff;
+    }
+
+    public void setTariff(Tariff.Price tariff) {
+        this.tariff = tariff;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "timeOfEntry=" + timeOfEntry +
+                ", timeOfDeparture=" + timeOfDeparture +
+                ", status=" + status +
+                ", place=" + place +
+                ", tariff=" + tariff +
+                ", countOfHour=" + countOfHour +
+                ", price=" + price +
+                '}';
     }
 }

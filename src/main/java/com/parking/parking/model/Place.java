@@ -37,4 +37,13 @@ public class Place {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return "Place{" +
+                "number=" + number +
+                ", area=" + area +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }
