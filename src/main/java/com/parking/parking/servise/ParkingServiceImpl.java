@@ -5,6 +5,7 @@ import com.parking.parking.model.Place;
 import com.parking.parking.model.Ticket;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -71,13 +72,22 @@ public class ParkingServiceImpl implements ParkingService {
         Place place = ticket.getPlace();
         map.remove(place);
         map.put(place, true);
+        List<Ticket> tickets=parking.getTickets();
+        tickets.remove(ticket);
         ticket.setTimeOfDeparture(LocalDateTime.now());
+        tickets.add(ticket);
         return ticket;
     }
 
     @Override
     public Ticket pay(Ticket ticket) {
+        List<Ticket> tickets=parking.getTickets();
+        tickets.remove(ticket);
         ticket.setStatus(true);
+        long time=Duration.between(ticket.getTimeOfEntry(),LocalDateTime.now()).getSeconds();
+        ticket.setCountOfHour(round(time));
+        ticket.setPrice(ticket.getCountOfHour()*ticket.getTariff());
+        tickets.add(ticket);
         return ticket;
     }
 
@@ -139,5 +149,14 @@ public class ParkingServiceImpl implements ParkingService {
     @Override
     public List<Ticket> ticketList() {
         return parking.getTickets();
+    }
+
+    private int round(long second){
+
+        if (second%3600==0){
+            return (int) (second/3600);
+        }else {
+            return (int) (second/3600+1);
+        }
     }
 }

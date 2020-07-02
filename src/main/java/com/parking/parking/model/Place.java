@@ -1,5 +1,7 @@
 package com.parking.parking.model;
 
+import java.util.Objects;
+
 public class Place {
     private int number;
     private double area;
@@ -45,5 +47,20 @@ public class Place {
                 ", area=" + area +
                 ", description='" + description + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Place)) return false;
+        Place place = (Place) o;
+        return getNumber() == place.getNumber() &&
+                Double.compare(place.getArea(), getArea()) == 0 &&
+                Objects.equals(getDescription(), place.getDescription());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getNumber(), getArea(), getDescription());
     }
 }

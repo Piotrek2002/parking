@@ -75,8 +75,8 @@ public class Ticket {
         this.place = place;
     }
 
-    public Tariff.Price getTariff() {
-        return tariff;
+    public double getTariff() {
+        return tariff.price;
     }
 
     public void setTariff(Tariff.Price tariff) {

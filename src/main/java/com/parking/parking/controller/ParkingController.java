@@ -44,6 +44,72 @@ public class ParkingController {
         return place;
     }
 
+    @PostMapping("/parkCar")
+    @ResponseBody
+    public String parkCar(@RequestBody Ticket ticket) {
+        if (parkingService.findAllFreePlace().contains(ticket.getPlace())) {
+            ticket.setTariff(Tariff.Price.CAR);
+            parkingService.park(ticket);
+            return "parkowanie " + ticket.toString();
+        } else {
+            return "miejsce jest niedostępne";
+        }
 
+    }
+
+    @PostMapping("/parkTrack")
+    @ResponseBody
+    public String parkTrack(@RequestBody Ticket ticket) {
+        if (parkingService.findAllFreePlace().contains(ticket.getPlace())) {
+        ticket.setTariff(Tariff.Price.TRACK);
+        parkingService.park(ticket);
+        return "parkowanie " + ticket.toString();
+         } else {
+         return "miejsce jest niedostępne";
+         }
+
+    }
+
+    @PostMapping("/parkBus")
+    @ResponseBody
+    public String parkBus(@RequestBody Ticket ticket) {
+        if (parkingService.findAllFreePlace().contains(ticket.getPlace())) {
+        ticket.setTariff(Tariff.Price.BUS);
+        parkingService.park(ticket);
+        return "parkowanie " + ticket.toString();
+         } else {
+         return "miejsce jest niedostępne";
+         }
+
+    }
+
+    @GetMapping("/ticketList")
+    @ResponseBody
+    public List<Ticket> ticketList() {
+        return parkingService.ticketList();
+    }
+
+    @PostMapping("/pay")
+    @ResponseBody
+    public Ticket pay(@RequestBody Ticket ticket) {
+        Ticket ticket1 = parkingService.findTicketByPlace(ticket.getPlace());
+        return parkingService.pay(ticket1);
+    }
+    @PostMapping("/getOut")
+    @ResponseBody
+    public Ticket getOut(@RequestBody Ticket ticket){
+        Ticket ticket1 = parkingService.findTicketByPlace(ticket.getPlace());
+        return parkingService.getOut(ticket1);
+    }
+    @PostMapping("/checkPlaceAvailability")
+    @ResponseBody
+    public String checkPlaceAvailability(@RequestBody Place place){
+        if (parkingService.checkPlaceAvailability(place)){
+            return "Miejsce dostepne: "+place.toString();
+        }else {
+            return "Miejsce nie dostępne";
+        }
+
+    }
 
 }
