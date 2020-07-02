@@ -2,8 +2,9 @@ package com.parking.parking.model;
 
 public class Tariff {
     public enum Price{
-        HOLIDAY(20),
-        NORMAL(10);
+        TRACK(30),
+        BUS(20),
+        CAR(10);
 
         double price;
 

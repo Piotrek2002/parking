@@ -5,43 +5,44 @@ import com.parking.parking.model.Place;
 import com.parking.parking.model.Ticket;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Component
-public class ParkingServiceImpl implements ParkingService{
+public class ParkingServiceImpl implements ParkingService {
 
-private Parking parking;
+    private Parking parking;
 
     public ParkingServiceImpl(Parking parking) {
         this.parking = parking;
-        Place place=new Place(1,15,"aaa");
-        Place place1=new Place(2,15,"bbb");
-        Place place2=new Place(3,15,"ccc");
-        Place place3=new Place(4,20,"ddd");
-        Place place4=new Place(5,40,"eee");
-        Map<Place,Boolean> map=new HashMap<>();
-        map.put(place,false);
-        map.put(place1,false);
-        map.put(place2,false);
-        map.put(place3,false);
-        map.put(place4,false);
+        Place place = new Place(1, 15, "aaa");
+        Place place1 = new Place(2, 15, "bbb");
+        Place place2 = new Place(3, 15, "ccc");
+        Place place3 = new Place(4, 20, "ddd");
+        Place place4 = new Place(5, 40, "eee");
+        Map<Place, Boolean> map = new HashMap<>();
+        map.put(place, true);
+        map.put(place1, true);
+        map.put(place2, true);
+        map.put(place3, true);
+        map.put(place4, true);
         this.parking.setPlaces(map);
     }
 
     @Override
     public void addPlace(Place place) {
-        Map<Place,Boolean> map=parking.getPlaces();
-        map.put(place,false);
+        Map<Place, Boolean> map = parking.getPlaces();
+        map.put(place, true);
         parking.setPlaces(map);
 
     }
 
     @Override
     public void deletePlace(int placeId) {
-        Map<Place,Boolean> map=parking.getPlaces();
-        Set<Place> places=map.keySet();
-        for (Place place:places){
-            if (place.getNumber()==placeId){
+        Map<Place, Boolean> map = parking.getPlaces();
+        Set<Place> places = map.keySet();
+        for (Place place : places) {
+            if (place.getNumber() == placeId) {
                 map.remove(place);
             }
         }
@@ -49,44 +50,73 @@ private Parking parking;
     }
 
     @Override
-    public void park(int ticketId) {
+    public void park(Ticket ticket) {
+        Map<Place, Boolean> map = parking.getPlaces();
+        Place place = ticket.getPlace();
+        map.remove(place);
+        map.put(place,false);
+        ticket.setTimeOfEntry(LocalDateTime.now());
+        ticket.setStatus(false);
 
     }
 
     @Override
-    public void getOut(int ticketId) {
-
+    public void getOut(Ticket ticket) {
+        Map<Place, Boolean> map = parking.getPlaces();
+        Place place = ticket.getPlace();
+        map.remove(place);
+        map.put(place,true);
+        ticket.setTimeOfDeparture(LocalDateTime.now());
     }
 
     @Override
-    public void pay(int ticketId) {
-
+    public void pay(Ticket ticket) {
+        ticket.setStatus(true);
     }
 
     @Override
-    public boolean checkTicketStatus(int ticketId) {
-        return false;
+    public boolean checkTicketStatus(Ticket ticket) {
+        if (ticket.isStatus()){
+            return true;
+        }else {
+            return false;
+        }
+
     }
 
 
     @Override
-    public boolean checkPlaceAvailability() {
-        return false;
+    public boolean checkPlaceAvailability(Place place) {
+        return parking.getPlaces().get(place);
     }
 
     @Override
-    public Ticket findTicketByPlaceNumber() {
-        return null;
+    public Ticket findTicketByPlace(Place place) {
+        List<Ticket> tickets=parking.getTickets();
+        Ticket t=new Ticket();
+        for (Ticket ticket:tickets){
+            if (place.equals(ticket.getPlace())){
+                t=ticket;
+            }
+        }
+        return t;
     }
 
     @Override
-    public List<Place> getAllPlace() {
-        return null;
+    public Map<Place, Boolean> getAllPlace() {
+        return parking.getPlaces();
     }
 
     @Override
     public List<Place> findAllFreePlace() {
-        return null;
+        List<Place> placeList=new ArrayList<>();
+        Set<Place> places=parking.getPlaces().keySet();
+        for (Place place:places){
+            if (parking.getPlaces().get(place)){
+                placeList.add(place);
+            }
+        }
+        return placeList;
     }
 
     @Override
