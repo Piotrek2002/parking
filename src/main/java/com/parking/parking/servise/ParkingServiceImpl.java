@@ -12,7 +12,8 @@ public class ParkingServiceImpl implements ParkingService{
 
 private Parking parking;
 
-    public ParkingServiceImpl() {
+    public ParkingServiceImpl(Parking parking) {
+        this.parking = parking;
         Place place=new Place(1,15,"aaa");
         Place place1=new Place(2,15,"bbb");
         Place place2=new Place(3,15,"ccc");
@@ -24,7 +25,7 @@ private Parking parking;
         map.put(place2,false);
         map.put(place3,false);
         map.put(place4,false);
-        parking.setPlaces(map);
+        this.parking.setPlaces(map);
     }
 
     @Override

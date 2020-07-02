@@ -1,11 +1,14 @@
 package com.parking.parking.model;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+
 
 import java.util.List;
 import java.util.Map;
 
 
+@Component
 public class Parking {
     Map<Place,Boolean> places;
     List<Ticket> tickets;
