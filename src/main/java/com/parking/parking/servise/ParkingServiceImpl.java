@@ -2,12 +2,15 @@ package com.parking.parking.servise;
 
 import com.parking.parking.model.Parking;
 import com.parking.parking.model.Place;
+import com.parking.parking.model.Tariff;
 import com.parking.parking.model.Ticket;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class ParkingServiceImpl implements ParkingService {
@@ -23,7 +26,12 @@ public class ParkingServiceImpl implements ParkingService {
         Place place4 = new Place(5, 40, "eee");
         Map<Place, Boolean> map = new HashMap<>();
         List<Ticket> tickets=new ArrayList<>();
-        map.put(place, true);
+        LocalDateTime timeOfEntry=LocalDateTime.parse("2020-07-03T13:09:53.413");
+        LocalDateTime timeOfDeparture=LocalDateTime.parse("2020-07-03T13:19:23.413");
+        Tariff.Price price=Tariff.Price.CAR;
+        Ticket ticket=new Ticket(timeOfEntry,timeOfDeparture,true,place,price,10,100);
+        tickets.add(ticket);
+        map.put(place, false);
         map.put(place1, true);
         map.put(place2, true);
         map.put(place3, true);
@@ -37,7 +45,6 @@ public class ParkingServiceImpl implements ParkingService {
         Map<Place, Boolean> map = parking.getPlaces();
         map.put(place, true);
         parking.setPlaces(map);
-
     }
 
     @Override
@@ -137,13 +144,24 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public Double monthlyIncome() {
-        return null;
+    public Double monthlyIncome(int year,int month) {
+        Month month1=Month.of(month);
+        List<Ticket> tickets=parking.getTickets().stream().filter(f->f.getTimeOfEntry().getMonth().equals(month1))
+                .filter(f->f.getTimeOfEntry().getYear()==year).collect(Collectors.toList());
+        double income=0;
+        for (Ticket ticket:tickets){
+            income+=ticket.getPrice();
+        }
+
+        return income;
     }
 
     @Override
-    public int numberOfTicketsPerMonth() {
-        return 0;
+    public int numberOfTicketsPerMonth(int year,int month) {
+        Month month1=Month.of(month);
+        List<Ticket> tickets=parking.getTickets().stream().filter(f->f.getTimeOfEntry().getMonth().equals(month1))
+                .filter(f->f.getTimeOfEntry().getYear()==year).collect(Collectors.toList());
+        return tickets.size();
     }
 
     @Override
@@ -151,12 +169,31 @@ public class ParkingServiceImpl implements ParkingService {
         return parking.getTickets();
     }
 
-    private int round(long second){
+    public int round(long second){
 
         if (second%3600==0){
             return (int) (second/3600);
         }else {
             return (int) (second/3600+1);
         }
+    }
+    @Override
+    public List<Place> findAllOccupiedPlace() {
+        List<Place> placeList = new ArrayList<>();
+        Set<Place> places = parking.getPlaces().keySet();
+        for (Place place : places) {
+            if (!parking.getPlaces().get(place)) {
+                placeList.add(place);
+            }
+        }
+        return placeList;
+    }
+
+    public Parking getParking() {
+        return parking;
+    }
+
+    public void setParking(Parking parking) {
+        this.parking = parking;
     }
 }

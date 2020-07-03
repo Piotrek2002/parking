@@ -111,5 +111,15 @@ public class ParkingController {
         }
 
     }
+    @GetMapping("monthlyIncome/year/month")
+    @ResponseBody
+    public double monthlyIncome(@PathVariable int year,@PathVariable int month){
+        return parkingService.monthlyIncome(year,month);
+    }
+    @GetMapping("numberOfTicketsPerMonth/year/month")
+    @ResponseBody
+    public int numberOfTicketsPerMonth(@PathVariable int year,@PathVariable int month){
+        return parkingService.numberOfTicketsPerMonth(year, month);
+    }
 
 }

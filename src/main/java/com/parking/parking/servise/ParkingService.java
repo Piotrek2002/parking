@@ -17,9 +17,10 @@ public interface ParkingService {
     Ticket findTicketByPlace(Place place);
     Map<Place, Boolean> getAllPlace();
     List<Place> findAllFreePlace();
-    Double monthlyIncome();
-    int numberOfTicketsPerMonth();
+    Double monthlyIncome(int year,int month);
+    int numberOfTicketsPerMonth(int year,int month);
     List<Ticket> ticketList();
+    public List<Place> findAllOccupiedPlace();
 
 
 

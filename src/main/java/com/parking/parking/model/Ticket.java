@@ -95,4 +95,5 @@ public class Ticket {
                 ", price=" + price +
                 '}';
     }
+
 }
